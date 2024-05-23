@@ -1,0 +1,1 @@
+export { GameEndedScreen } from './GameEndedScreen';

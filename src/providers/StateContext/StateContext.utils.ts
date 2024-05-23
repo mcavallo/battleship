@@ -1,0 +1,269 @@
+import Rand from 'rand-seed';
+
+import { LOOP_PROTECTION_LIMIT } from '@/constants';
+
+import {
+  Board,
+  Coords,
+  Direction,
+  EventKind,
+  GameScore,
+  GameState,
+  GameStats,
+  Placement,
+  Ship,
+  ShipTemplate,
+  ShipsMap,
+} from './StateContext.types';
+
+/*
+ * Generates a seeded random number between two numbers.
+ */
+export function randomInt(rand: Rand, min: number, max: number) {
+  return Math.floor(rand.next() * (max - min + 1) + min);
+}
+
+/*
+ * Generates an empty game board of the given size.
+ */
+export function generateEmptyBoard(size: number): Board {
+  const board: Board = [];
+  if (size < 1) {
+    throw new Error('Invalid board size.');
+  }
+
+  for (let i = 0; i < size; i++) {
+    board.push([]);
+    for (let j = 0; j < size; j++) {
+      board[i].push(0);
+    }
+  }
+
+  return board;
+}
+
+/*
+ * Calculates the score for the game based on the amount and size of the ships and
+ * the amount of hits.
+ */
+export function calculateScore(shipsMap: ShipsMap): GameScore {
+  return Object.values(shipsMap).reduce(
+    (acc, ship) => {
+      acc.current += ship.hits;
+      acc.win += ship.size;
+      return acc;
+    },
+    { current: 0, win: 0 },
+  );
+}
+
+/*
+ * Calculates the required win score based on the amount and size of the ships.
+ */
+export function generateShipsMaps(ships: ShipTemplate[]): ShipsMap {
+  let currentId = 1;
+  return ships.reduce<ShipsMap>((acc, ship) => {
+    acc[currentId] = { ...ship, id: currentId };
+    currentId++;
+    return acc;
+  }, {});
+}
+
+/*
+ * Given a set of coordinates and a size, it returns a rows slice of the board.
+ */
+export function getRowsSlice(board: Board, x: number, y: number, size: number) {
+  const rows: number[] = [];
+
+  for (let i = 0; i < size; i++) {
+    rows.push(board[y][x + i]);
+  }
+
+  return rows;
+}
+
+/*
+ * Given a set of coordinates and a size, it returns a columns slice of the board.
+ */
+export function getColsSlice(board: Board, x: number, y: number, size: number) {
+  const cols: number[] = [];
+
+  for (let i = 0; i < size; i++) {
+    cols.push(board[y + i][x]);
+  }
+
+  return cols;
+}
+
+/*
+ * Returns a valid placement if a ship can be placed in the desired coordinates,
+ * otherwise it returns null.
+ */
+export function findValidPlacement(
+  x: number,
+  y: number,
+  direction: Direction,
+  ship: Ship,
+  board: Board,
+): Placement | null {
+  const { size } = ship;
+
+  if (direction === Direction.Horizontal) {
+    if (x + size > board.length) {
+      return null;
+    }
+
+    const rows = getRowsSlice(board, x, y, size);
+    return rows.some((v) => v !== 0) ? null : { x, y, direction, size };
+  } else {
+    if (y + size > board.length) {
+      return null;
+    }
+
+    const cols = getColsSlice(board, x, y, size);
+    return cols.some((v) => v !== 0) ? null : { x, y, direction, size };
+  }
+}
+
+/*
+ * Places a ship on the board.
+ */
+export function placeShip(board: Board, ship: Ship, placement: Placement) {
+  const newBoard = [...board];
+
+  if (placement.direction === Direction.Horizontal) {
+    for (let i = placement.x; i < placement.x + placement.size; i++) {
+      newBoard[placement.y][i] = ship.id;
+    }
+  } else {
+    for (let i = placement.y; i < placement.y + placement.size; i++) {
+      newBoard[i][placement.x] = ship.id;
+    }
+  }
+
+  return newBoard;
+}
+
+/*
+ * Places all ships on the board.
+ */
+export function computeShipsPlacement(ts: number, board: Board, shipsMap: ShipsMap) {
+  let newBoard = [...board];
+  const rand = new Rand(String(ts));
+  const shipIds = Object.values(shipsMap).map((ship) => ship.id);
+  let shipId = shipIds.shift();
+  let loopCount = 0;
+
+  while (shipId) {
+    if (loopCount > LOOP_PROTECTION_LIMIT) {
+      throw new Error(`Ship placement is infinite looping.`);
+    }
+
+    const x = randomInt(rand, 0, board.length - 1);
+    const y = randomInt(rand, 0, board.length - 1);
+    const direction = randomInt(rand, 0, 1);
+    const ship = shipsMap[shipId];
+    const placement = findValidPlacement(x, y, direction, ship, board);
+
+    if (placement !== null) {
+      shipId = shipIds.shift();
+      newBoard = placeShip(newBoard, ship, placement);
+    }
+
+    loopCount++;
+  }
+
+  return newBoard;
+}
+
+/*
+ * Computes an attack at the given coordinates.
+ */
+export function computeAttack(state: GameState, ts: number, coords: Coords) {
+  const { attacksMap, log, score, shipsMap } = state;
+  const [shipId] = getRowsSlice(state.board, coords.x, coords.y, 1);
+  const isHit = shipId !== 0;
+
+  attacksMap[`${coords.y}${coords.x}`] = isHit;
+
+  if (!isHit) {
+    log.push({
+      ts,
+      event: {
+        ...coords,
+        type: EventKind.Miss,
+      },
+    });
+
+    return {
+      attacksMap,
+      log,
+      score,
+    };
+  }
+
+  const target = shipsMap[shipId];
+  const eventData = {
+    ...coords,
+    targetId: target.id,
+  };
+
+  target.hits++;
+
+  log.push({
+    ts,
+    event: {
+      ...eventData,
+      type: EventKind.Hit,
+    },
+  });
+
+  if (target.hits >= target.size) {
+    log.push({
+      ts,
+      event: {
+        ...eventData,
+        type: EventKind.Sink,
+      },
+    });
+  }
+
+  return {
+    attacksMap,
+    log,
+    score: calculateScore(shipsMap),
+  };
+}
+
+/*
+ * Aggregates the game stats.
+ */
+export function computeGameStats(state: GameState): GameStats {
+  const stats = state.log.reduce(
+    (acc, entry) => {
+      switch (entry.event.type) {
+        case EventKind.Miss:
+          acc.attacks++;
+          acc.misses++;
+          break;
+        case EventKind.Hit:
+          acc.attacks++;
+          acc.hits++;
+          break;
+        case EventKind.Sink:
+          acc.sunk++;
+          break;
+        default:
+          break;
+      }
+
+      return acc;
+    },
+    { attacks: 0, hitRatio: 0, hits: 0, misses: 0, score: 0, sunk: 0 },
+  );
+
+  stats.hitRatio = stats.attacks > 0 ? (stats.hits / (stats.hits + stats.misses)) * 100 : 0;
+  stats.score = state.score.current;
+
+  return stats;
+}

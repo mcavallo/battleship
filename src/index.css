@@ -1,0 +1,59 @@
+:root {
+  font-family: "Roboto", sans-serif;
+  font-weight: 400;
+  font-style: normal;
+  font-size: 14px;
+  line-height: 1.5;
+  font-synthesis: none;
+  text-rendering: optimizeLegibility;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+body {
+  margin: 0;
+  min-width: 320px;
+  min-height: 100vh;
+}
+
+button {
+  appearance: none;
+  border: 0;
+  color: var(--color-button-dark-text);
+  padding: 8px 12px;
+  border-radius: 3px;
+  background-color: var(--color-accent);
+  font-size: 16px;
+  line-height: 1;
+  cursor: pointer;
+  transition: 100ms all ease-in-out;
+
+  &:hover {
+    background-color: var(--color-accent-hover);
+  }
+}
+
+button[disabled], button[disabled]:hover {
+  cursor: default;
+  color: var(--color-button-dark-text-disabled);
+  background-color: var(--color-accent-dark-disabled);
+}
+
+h1 {
+  margin-top: 0;
+}
+
+.error {
+  color: var(--color-error);
+}
+
+@media (prefers-color-scheme: light) {
+  button {
+    color: var(--color-button-light-text);
+  }
+
+  button[disabled], button[disabled]:hover {
+    color: var(--color-button-light-text-disabled);
+    background-color: var(--color-accent-light-disabled);
+  }
+}

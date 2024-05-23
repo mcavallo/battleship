@@ -1,0 +1,209 @@
+#root {
+  max-width: 1280px;
+  margin: 0 auto;
+  display: flex;
+  min-height: 100vh;
+}
+
+.intro-screen {
+  flex: 1;
+  text-align: center;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+}
+
+.game-screen {
+  padding-top: 5rem;
+  flex: 1;
+  display: flex;
+}
+
+.game-screen > .columns {
+  flex: 1;
+  display: flex;
+  flex-direction: row;
+  justify-content: center;
+}
+
+.buttons-panel {
+  position: fixed;
+  top: 0;
+  right: 0;
+  padding: 16px;
+}
+
+.buttons-panel > * {
+  margin-left: 8px;
+
+  &:first-of-type {
+    margin-left: 0;
+  }
+}
+
+.event-log {
+  margin-top: var(--cell-size);
+  margin-left: 3rem;
+  width: 320px;
+}
+
+.event-log .entry {
+  margin-top: 8px;
+}
+
+.event-log .content {
+  display: flex;
+  justify-content: start;
+  align-items: center;
+}
+
+.event-log .content > :first-child {
+  width: 22px;
+}
+
+.event-log ul.stats {
+  margin: 4px 0 0 0;
+  line-height: 1;
+  padding: 8px;
+  background-color: var(--color-stats-dark-bg);
+  list-style: none;
+}
+
+.event-log ul.stats li {
+  padding: 0;
+  margin: 6px 0 0 0;
+
+  &:first-of-type {
+    margin: 0
+  }
+}
+
+.board {
+  display: flex;
+  flex-direction: column;
+  user-select: none;
+}
+
+.header-row, .row {
+  display: flex;
+  flex-direction: row;
+  margin-top: 2px;
+}
+
+.header-row {
+  margin-left: var(--cell-size);
+}
+
+.header-cell, .cell {
+  width: var(--cell-size);
+  height: var(--cell-size);
+  margin-left: 2px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.header-cell {
+  color: var(--color-page-dark-text);
+  cursor: default;
+  pointer-events: none;
+}
+
+.cell {
+  color: var(--color-cell-neutral-dark-text);
+  cursor: default;
+  transition: 100ms all ease-in-out;
+}
+
+.cell.taken {
+  color: var(--color-cell-taken-dark-text);
+}
+
+.cell.available {
+  background-color: var(--color-cell-neutral-dark-bg);
+}
+
+.board.game-active .cell.available {
+  cursor: pointer;
+
+  &:hover {
+    background-color: var(--color-cell-neutral-dark-hover-bg);
+  }
+}
+
+.cell.miss {
+  color: var(--color-cell-water-dark-text);
+  background-color: var(--color-cell-water-bg);
+}
+
+.cell.hit {
+  color: var(--color-cell-hit-dark-text);
+  background-color: var(--color-cell-hit-bg);
+}
+
+.board > *:first-of-type {
+  margin-top: 0;
+}
+
+.row > *:first-of-type {
+  margin-left: 0;
+}
+
+@media (prefers-color-scheme: light) {
+  .header-cell {
+    color: var(--color-page-light-text);
+  }
+
+  .cell {
+    color: var(--color-cell-neutral-light-text);
+  }
+
+  .cell.taken {
+    color: var(--color-cell-taken-light-text);
+  }
+
+  .cell.available {
+    background-color: var(--color-cell-neutral-light-bg);
+  }
+
+  .board.game-active .cell.available {
+    &:hover {
+      background-color: var(--color-cell-neutral-light-hover-bg);
+    }
+  }
+
+  .cell.miss {
+    color: var(--color-cell-water-light-text);
+  }
+
+  .cell.hit {
+    color: var(--color-cell-hit-light-text);
+  }
+
+  .event-log ul.stats {
+    background-color: var(--color-stats-light-bg);
+  }
+}
+
+@media only screen and (max-width: 768px) {
+  .buttons-panel {
+    position: fixed;
+    top: 0;
+    right: 0;
+    left: 0;
+    width: 100vw;
+    text-align: center;
+
+  }
+
+  .game-screen > .columns {
+    flex-direction: column;
+    justify-content: start;
+    align-items: center;
+  }
+
+  .event-log {
+    margin-left: 0;
+  }
+}
