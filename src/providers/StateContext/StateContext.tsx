@@ -18,7 +18,7 @@ export const StateContext = createContext<StateContextValues>({} as StateContext
 export const useGameState = () => {
   const value = useContext(StateContext);
 
-  if (value === null) {
+  if (!value || Object.keys(value).length === 0) {
     throw new Error(`'useGameState' should only be used inside 'StateContext'.`);
   }
 

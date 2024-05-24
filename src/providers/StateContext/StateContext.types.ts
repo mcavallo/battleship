@@ -93,6 +93,7 @@ export type GameState = {
 export enum GameActionKind {
   Attack = 'Attack',
   End = 'End',
+  Introspection = 'Introspection', // Used only for testing
   Start = 'Start',
   ToggleDebug = 'ToggleDebug',
 }
@@ -112,6 +113,10 @@ export interface EndAction {
   };
 }
 
+export interface IntrospectionAction {
+  type: GameActionKind.Introspection;
+}
+
 export interface StartAction {
   type: GameActionKind.Start;
   payload: {
@@ -123,4 +128,9 @@ export interface ToggleDebugAction {
   type: GameActionKind.ToggleDebug;
 }
 
-export type GameAction = AttackAction | EndAction | StartAction | ToggleDebugAction;
+export type GameAction =
+  | AttackAction
+  | EndAction
+  | IntrospectionAction
+  | StartAction
+  | ToggleDebugAction;

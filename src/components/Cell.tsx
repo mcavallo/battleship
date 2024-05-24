@@ -26,6 +26,7 @@ export const Cell = ({ onClick, onMouseOut, onMouseOver, x, y }: CellProps) => {
       onClick={onClick}
       onMouseOut={onMouseOut}
       onMouseOver={onMouseOver(id, tooltipContent)}
+      role="cell"
     >
       {label}
     </div>

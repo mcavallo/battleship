@@ -11,7 +11,7 @@ interface RowProps {
 
 export const Row = ({ onAttack, onCellMouseOut, onCellMouseOver, row, rowIdx }: RowProps) => {
   return (
-    <div className="row">
+    <div className="row" role="row">
       <LetterHeaderCell idx={rowIdx} key={`headerCell${rowIdx}`} />
       {row.map((_, cellIdx) => (
         <Cell

@@ -7,5 +7,9 @@ interface LetterHeaderCellProps {
 export const LetterHeaderCell = ({ idx }: LetterHeaderCellProps) => {
   const label = useMemo(() => String.fromCharCode(idx + 1 + 64), [idx]);
 
-  return <div className="header-cell">{label}</div>;
+  return (
+    <div className="header-cell" role="rowheader">
+      {label}
+    </div>
+  );
 };

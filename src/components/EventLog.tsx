@@ -16,12 +16,12 @@ export const EventLog = () => {
   }
 
   return (
-    <div className="event-log">
+    <div className="event-log" role="feed">
       {entries.map((entry) => {
         switch (entry.event.type) {
           case EventKind.End:
             return (
-              <div className="entry" key={`${entry.ts}${entry.event.type}`}>
+              <div className="entry" key={`${entry.ts}${entry.event.type}`} role="log">
                 <div className="content">
                   <span>🏅</span>
                   <span>
@@ -48,7 +48,7 @@ export const EventLog = () => {
             );
           case EventKind.Miss:
             return (
-              <div className="entry" key={`${entry.ts}${entry.event.type}`}>
+              <div className="entry" key={`${entry.ts}${entry.event.type}`} role="log">
                 <div className="content">
                   <span>🌊</span>
                   <span>Miss</span>
@@ -57,7 +57,7 @@ export const EventLog = () => {
             );
           case EventKind.Hit:
             return (
-              <div className="entry" key={`${entry.ts}${entry.event.type}`}>
+              <div className="entry" key={`${entry.ts}${entry.event.type}`} role="log">
                 <div className="content">
                   <span>💥</span>
                   <span>
@@ -68,7 +68,7 @@ export const EventLog = () => {
             );
           case EventKind.Sink:
             return (
-              <div className="entry" key={`${entry.ts}${entry.event.type}`}>
+              <div className="entry" key={`${entry.ts}${entry.event.type}`} role="log">
                 <div className="content">
                   <span>🚢</span>
                   <span>
@@ -79,7 +79,7 @@ export const EventLog = () => {
             );
           case EventKind.Start:
             return (
-              <div className="entry" key={`${entry.ts}${entry.event.type}`}>
+              <div className="entry" key={`${entry.ts}${entry.event.type}`} role="log">
                 <div className="content">
                   <span>🏁</span>
                   <span>

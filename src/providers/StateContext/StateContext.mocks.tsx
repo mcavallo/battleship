@@ -1,9 +1,10 @@
 import merge from 'lodash/merge';
-import React, { Dispatch } from 'react';
+import React, { Dispatch, useEffect } from 'react';
 
 import { GameAction, GameState } from '@/providers/StateContext/StateContext.types.ts';
 
-import { StateContext } from './StateContext';
+import { StateContext, useGameState } from './StateContext';
+import { DEFAULT_MOCKED_STATE, INTROSPECTION_ACTION } from './StateContext.mocks.constants';
 
 export type PartialStateContextProviderValue = {
   state?: Partial<GameState>;
@@ -15,28 +16,24 @@ interface MockedStateContextProviderProps {
   value?: PartialStateContextProviderValue;
 }
 
-const defaultState = {
-  attacksMap: {},
-  board: [],
-  hasGameEnded: false,
-  hasGameStarted: false,
-  isDebug: false,
-  log: [],
-  shipsMap: {},
-  score: {
-    current: 0,
-    win: 0,
-  },
-};
-
 export const MockedStateContextProvider = ({
   children,
   value,
 }: MockedStateContextProviderProps) => {
   const valueWithDefaults = {
-    state: merge(Object.assign({}, defaultState), value?.state || {}),
+    state: merge(Object.assign({}, DEFAULT_MOCKED_STATE), value?.state || {}),
     dispatch: value?.dispatch || (() => {}),
   };
 
   return <StateContext.Provider value={valueWithDefaults}>{children}</StateContext.Provider>;
+};
+
+export const IntrospectionComponent = () => {
+  const { state, dispatch } = useGameState();
+
+  useEffect(() => {
+    dispatch(INTROSPECTION_ACTION);
+  }, [state, dispatch]);
+
+  return null;
 };

@@ -1,6 +1,6 @@
 import cloneDeep from 'lodash/cloneDeep';
 
-import { Board, Ship, ShipTemplate, ShipsMap } from './StateContext.types.ts';
+import { Board, EventKind, LogEntry, Ship, ShipTemplate, ShipsMap } from './StateContext.types.ts';
 
 export const SHIP_ONE_TEMPLATE: ShipTemplate = { name: 'one', hits: 0, size: 4 };
 
@@ -25,6 +25,10 @@ export const SHIP_FIVE: Ship = { ...SHIP_FIVE_TEMPLATE, id: 5 };
 export const SHIP_SIX_TEMPLATE: ShipTemplate = { name: 'six', hits: 0, size: 4 };
 
 export const SHIP_SIX: Ship = { ...SHIP_SIX_TEMPLATE, id: 6 };
+
+export const SHIP_SEVEN_TEMPLATE: ShipTemplate = { name: 'seven', hits: 0, size: 1 };
+
+export const SHIP_SEVEN: Ship = { ...SHIP_SEVEN_TEMPLATE, id: 7 };
 
 export const SHIP_MAP_ONE: ShipsMap = {
   1: SHIP_ONE,
@@ -65,6 +69,57 @@ export const BOARD_SIZE_10: Board = [
   [0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
   [0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
 ];
+
+export const END_LOG_ENTRY: LogEntry = {
+  ts: 0,
+  event: {
+    type: EventKind.End,
+    stats: {
+      attacks: 0,
+      hitRatio: 0,
+      hits: 0,
+      misses: 0,
+      score: 0,
+      sunk: 0,
+    },
+  },
+};
+
+export const MISS_LOG_ENTRY: LogEntry = {
+  ts: 0,
+  event: {
+    type: EventKind.Miss,
+    x: 0,
+    y: 0,
+  },
+};
+
+export const HIT_LOG_ENTRY: LogEntry = {
+  ts: 0,
+  event: {
+    type: EventKind.Hit,
+    x: 0,
+    y: 0,
+    targetId: 1,
+  },
+};
+
+export const SINK_LOG_ENTRY: LogEntry = {
+  ts: 0,
+  event: {
+    type: EventKind.Sink,
+    x: 0,
+    y: 0,
+    targetId: 1,
+  },
+};
+
+export const START_LOG_ENTRY: LogEntry = {
+  ts: 0,
+  event: {
+    type: EventKind.Start,
+  },
+};
 
 /**
  * Fills a row with sequential numbers.

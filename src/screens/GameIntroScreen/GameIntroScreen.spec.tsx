@@ -12,7 +12,9 @@ import { GameIntroScreen } from './GameIntroScreen';
 const NOW = '2024-05-24T00:00:00.000Z';
 const dispatch = jest.fn();
 
-afterEach(cleanup);
+afterEach(() => {
+  cleanup();
+});
 
 afterAll(() => {
   MockDate.reset();

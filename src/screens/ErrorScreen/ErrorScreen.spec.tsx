@@ -2,7 +2,9 @@ import { cleanup, render, screen } from '@testing-library/react';
 
 import { ErrorScreen } from './ErrorScreen';
 
-afterEach(cleanup);
+afterEach(() => {
+  cleanup();
+});
 
 describe('ErrorScreen', () => {
   describe(`when it receives an error with a message`, () => {

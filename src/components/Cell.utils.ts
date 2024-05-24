@@ -10,7 +10,7 @@ export function getLabel(isDebug: boolean, isHit: boolean, ship: Ship | null, ce
     return '';
   }
 
-  return ship?.size ? ship.size : cellValue;
+  return String(ship?.size ? ship.size : cellValue);
 }
 
 /**
