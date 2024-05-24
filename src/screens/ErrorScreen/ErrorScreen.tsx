@@ -4,9 +4,13 @@ interface ErrorScreenProps {
 
 export const ErrorScreen = ({ error }: ErrorScreenProps) => {
   return (
-    <div role="alert">
+    <div className="error-screen" data-testid="intro-screen">
       <h1>Oops, something went wrong!</h1>
-      <div className="error">{error.message}</div>
+      {error.message && (
+        <div className="error" role="error">
+          {error.message}
+        </div>
+      )}
     </div>
   );
 };
