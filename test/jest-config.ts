@@ -18,6 +18,7 @@ const config: Config = {
     '\\.mocks\\.tsx?$',
     '\\.types\\.tsx?$',
     'index\\.tsx?$',
+    'main\\.tsx?$',
   ],
   coverageDirectory: '../coverage',
   coverageReporters: process.env.CI ? ['text'] : ['lcov'],

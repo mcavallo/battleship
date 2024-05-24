@@ -1,17 +1,18 @@
 import './App.css';
 
-import { useGameState } from '@/providers/StateContext';
-import { GameIntroScreen } from '@/screens/GameIntroScreen';
-import { GameScreen } from '@/screens/GameScreen';
+import { ErrorBoundary } from 'react-error-boundary';
 
-function App() {
-  const { state } = useGameState();
+import { StateContextProvider } from '@/providers/StateContext';
+import { ErrorScreen } from '@/screens/ErrorScreen';
 
-  if (!state.hasGameStarted) {
-    return <GameIntroScreen />;
-  }
+import { Game } from './Game';
 
-  return <GameScreen />;
-}
-
-export default App;
+export const App = () => {
+  return (
+    <ErrorBoundary fallbackRender={ErrorScreen}>
+      <StateContextProvider>
+        <Game />
+      </StateContextProvider>
+    </ErrorBoundary>
+  );
+};

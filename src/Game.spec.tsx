@@ -6,9 +6,11 @@ import {
   PartialStateContextProviderValue,
 } from '@/providers/StateContext/StateContext.mocks';
 
-import App from './App';
+import { Game } from './Game';
 
-afterEach(cleanup);
+afterEach(() => {
+  cleanup();
+});
 
 const withWrapper = (
   value?: PartialStateContextProviderValue,
@@ -22,11 +24,11 @@ const withWrapper = (
   };
 };
 
-describe('App', () => {
+describe('Game', () => {
   describe(`when the game has not yet started`, () => {
     it(`renders the intro screen`, async () => {
       render(
-        <App />,
+        <Game />,
         withWrapper({
           state: {
             hasGameStarted: false,
@@ -41,7 +43,7 @@ describe('App', () => {
   describe(`when the game has started`, () => {
     it(`renders the game screen`, async () => {
       render(
-        <App />,
+        <Game />,
         withWrapper({
           state: {
             hasGameStarted: true,
