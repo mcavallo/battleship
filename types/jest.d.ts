@@ -21,11 +21,3 @@ type TestCases<T extends (...args: any) => any> = [ReturnType<T>, Parameters<T>]
 
 // eslint-disable-next-line @typescript-eslint/no-explicit-any
 type TestCasesExtra<T extends (...args: any) => any, U> = [ReturnType<T>, Parameters<T>, U][];
-
-namespace jest {
-  // eslint-disable-next-line @typescript-eslint/no-explicit-any
-  type TestCases<T extends (...args: any) => any, U> = [ReturnType<T>, Parameters<T>, U][];
-
-  // eslint-disable-next-line @typescript-eslint/no-explicit-any
-  type TestCasesExtra<T extends (...args: any) => any, U> = [ReturnType<T>, Parameters<T>, U][];
-}
