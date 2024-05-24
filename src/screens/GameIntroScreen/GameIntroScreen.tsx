@@ -15,9 +15,11 @@ export const GameIntroScreen = () => {
   }, [dispatch]);
 
   return (
-    <div className="intro-screen">
+    <div className="intro-screen" data-testid="intro-screen">
       <h1>Battleship</h1>
-      <button onClick={handleStartClick}>Play</button>
+      <button role="button" aria-label="play" onClick={handleStartClick}>
+        Play
+      </button>
     </div>
   );
 };

@@ -79,7 +79,7 @@ export const GameScreen = () => {
   });
 
   return (
-    <div className="game-screen">
+    <div className="game-screen" data-testid="game-screen">
       <div className="buttons-panel">
         <button onClick={handleGiveUpClick} disabled={state.hasGameEnded}>
           Give up

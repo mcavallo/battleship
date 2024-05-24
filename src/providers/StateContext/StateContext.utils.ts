@@ -1,3 +1,4 @@
+import cloneDeep from 'lodash/cloneDeep';
 import Rand from 'rand-seed';
 
 import { LOOP_PROTECTION_LIMIT } from '@/constants';
@@ -11,7 +12,6 @@ import {
   GameState,
   GameStats,
   Placement,
-  Ship,
   ShipTemplate,
   ShipsMap,
 } from './StateContext.types';
@@ -28,7 +28,7 @@ export function randomInt(rand: Rand, min: number, max: number) {
  */
 export function generateEmptyBoard(size: number): Board {
   const board: Board = [];
-  if (size < 1) {
+  if (size < 2) {
     throw new Error('Invalid board size.');
   }
 
@@ -72,7 +72,11 @@ export function generateShipsMaps(ships: ShipTemplate[]): ShipsMap {
 /*
  * Given a set of coordinates and a size, it returns a rows slice of the board.
  */
-export function getRowsSlice(board: Board, x: number, y: number, size: number) {
+export function getRowsSlice(board: Board, { x, y, size }: { x: number; y: number; size: number }) {
+  if (board[y].length < x + size) {
+    throw new Error(`getRowsSlice on ${x}:${y} with size ${size} is out of bounds.`);
+  }
+
   const rows: number[] = [];
 
   for (let i = 0; i < size; i++) {
@@ -85,7 +89,11 @@ export function getRowsSlice(board: Board, x: number, y: number, size: number) {
 /*
  * Given a set of coordinates and a size, it returns a columns slice of the board.
  */
-export function getColsSlice(board: Board, x: number, y: number, size: number) {
+export function getColsSlice(board: Board, { x, y, size }: { x: number; y: number; size: number }) {
+  if (board.length < y + size) {
+    throw new Error(`getColsSlice on ${x}:${y} with size ${size} is out of bounds.`);
+  }
+
   const cols: number[] = [];
 
   for (let i = 0; i < size; i++) {
@@ -99,45 +107,53 @@ export function getColsSlice(board: Board, x: number, y: number, size: number) {
  * Returns a valid placement if a ship can be placed in the desired coordinates,
  * otherwise it returns null.
  */
-export function findValidPlacement(
-  x: number,
-  y: number,
-  direction: Direction,
-  ship: Ship,
-  board: Board,
-): Placement | null {
-  const { size } = ship;
+export function findValidPlacement(board: Board, placement: Placement): Placement | null {
+  const { direction, size, x, y } = placement;
 
   if (direction === Direction.Horizontal) {
-    if (x + size > board.length) {
+    if (x + size > board[y].length) {
       return null;
     }
 
-    const rows = getRowsSlice(board, x, y, size);
-    return rows.some((v) => v !== 0) ? null : { x, y, direction, size };
+    const rows = getRowsSlice(board, { x, y, size });
+    return rows.some((v) => v !== 0) ? null : placement;
   } else {
     if (y + size > board.length) {
       return null;
     }
 
-    const cols = getColsSlice(board, x, y, size);
-    return cols.some((v) => v !== 0) ? null : { x, y, direction, size };
+    const cols = getColsSlice(board, { x, y, size });
+    return cols.some((v) => v !== 0) ? null : placement;
   }
+}
+
+/*
+ * Returns a string representation of a placement.
+ */
+export function placementAsString(placement: Placement) {
+  const direction = placement.direction === Direction.Horizontal ? 'Horizontal' : 'Vertical';
+  return `coords: ${placement.x}:${placement.y}, direction: ${direction}, size: ${placement.size}`;
 }
 
 /*
  * Places a ship on the board.
  */
-export function placeShip(board: Board, ship: Ship, placement: Placement) {
-  const newBoard = [...board];
+export function placeShip(board: Board, shipId: number, placement: Placement) {
+  const verifiedPlacement = findValidPlacement(board, placement);
+
+  if (verifiedPlacement === null) {
+    throw new Error(`Invalid placement at ${placementAsString(placement)}.`);
+  }
+
+  const newBoard = cloneDeep(board);
 
   if (placement.direction === Direction.Horizontal) {
     for (let i = placement.x; i < placement.x + placement.size; i++) {
-      newBoard[placement.y][i] = ship.id;
+      newBoard[placement.y][i] = shipId;
     }
   } else {
     for (let i = placement.y; i < placement.y + placement.size; i++) {
-      newBoard[i][placement.x] = ship.id;
+      newBoard[i][placement.x] = shipId;
     }
   }
 
@@ -148,7 +164,7 @@ export function placeShip(board: Board, ship: Ship, placement: Placement) {
  * Places all ships on the board.
  */
 export function computeShipsPlacement(ts: number, board: Board, shipsMap: ShipsMap) {
-  let newBoard = [...board];
+  let newBoard = cloneDeep(board);
   const rand = new Rand(String(ts));
   const shipIds = Object.values(shipsMap).map((ship) => ship.id);
   let shipId = shipIds.shift();
@@ -163,11 +179,13 @@ export function computeShipsPlacement(ts: number, board: Board, shipsMap: ShipsM
     const y = randomInt(rand, 0, board.length - 1);
     const direction = randomInt(rand, 0, 1);
     const ship = shipsMap[shipId];
-    const placement = findValidPlacement(x, y, direction, ship, board);
+    const placement = { direction, size: ship.size, x, y };
 
-    if (placement !== null) {
+    try {
+      newBoard = placeShip(newBoard, ship.id, placement);
       shipId = shipIds.shift();
-      newBoard = placeShip(newBoard, ship, placement);
+    } catch {
+      // Errors are expected in this context
     }
 
     loopCount++;
@@ -180,8 +198,8 @@ export function computeShipsPlacement(ts: number, board: Board, shipsMap: ShipsM
  * Computes an attack at the given coordinates.
  */
 export function computeAttack(state: GameState, ts: number, coords: Coords) {
-  const { attacksMap, log, score, shipsMap } = state;
-  const [shipId] = getRowsSlice(state.board, coords.x, coords.y, 1);
+  const { attacksMap, board, log, score, shipsMap } = structuredClone(state);
+  const [shipId] = getRowsSlice(board, { ...coords, size: 1 });
   const isHit = shipId !== 0;
 
   attacksMap[`${coords.y}${coords.x}`] = isHit;
@@ -232,6 +250,7 @@ export function computeAttack(state: GameState, ts: number, coords: Coords) {
     attacksMap,
     log,
     score: calculateScore(shipsMap),
+    shipsMap,
   };
 }
 
@@ -266,4 +285,11 @@ export function computeGameStats(state: GameState): GameStats {
   stats.score = state.score.current;
 
   return stats;
+}
+
+/*
+ * Checks if the victory condition for the game has been reached.
+ */
+export function isVictoryConditionReached(state: GameState) {
+  return state.score.current === state.score.win;
 }

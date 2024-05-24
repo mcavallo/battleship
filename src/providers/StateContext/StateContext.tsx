@@ -3,7 +3,7 @@ import React, { createContext, useContext, useMemo, useReducer } from 'react';
 import { gameReducer, getInitialState } from './StateContext.state.ts';
 import { GameAction, GameState } from './StateContext.types.ts';
 
-interface StateContextValues {
+export interface StateContextValues {
   state: GameState;
   dispatch: React.Dispatch<GameAction>;
 }

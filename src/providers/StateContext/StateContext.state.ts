@@ -14,6 +14,7 @@ import {
   computeShipsPlacement,
   generateEmptyBoard,
   generateShipsMaps,
+  isVictoryConditionReached,
 } from './StateContext.utils.ts';
 
 export const BATTLESHIP_TEMPLATE: ShipTemplate = {
@@ -54,7 +55,7 @@ export function gameReducer(state: GameState, action: GameAction) {
         ...computeAttack(newState, ts, coords),
       };
 
-      if (computedState.score.current === computedState.score.win) {
+      if (isVictoryConditionReached(computedState)) {
         return gameReducer(computedState, {
           type: GameActionKind.End,
           payload: {
