@@ -44,9 +44,6 @@ export function getInitialState(): GameState {
 }
 
 export function gameReducer(state: GameState, action: GameAction) {
-  // @ts-expect-error dont mind this here!
-  console.log(`@[${action.type}]`, action.payload!);
-
   switch (action.type) {
     case GameActionKind.Attack: {
       const newState = structuredClone(state);

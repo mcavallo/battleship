@@ -1,5 +1,7 @@
 # Battleship
 
+The app can be previewed at https://mcavallo.github.io/battleship/
+
 ## Running the app locally
 
 To run the app locally you need to first install the dependencies with:
