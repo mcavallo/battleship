@@ -1,7 +1,8 @@
-import classNames from 'classnames';
 import { useMemo } from 'react';
 
 import { useGameState } from '@/providers/StateContext';
+
+import { getComponentProperties } from './Cell.utils.ts';
 
 interface CellProps {
   onClick: () => void;
@@ -13,41 +14,18 @@ interface CellProps {
 
 export const Cell = ({ onClick, onMouseOut, onMouseOver, x, y }: CellProps) => {
   const { state } = useGameState();
-  const { elementId, isAvailable, isHit, isMiss, isTaken, tooltipContent, label } = useMemo(() => {
-    const value = state.board[y][x];
-    const hit = state.attacksMap?.[`${y}${x}`];
-    const ship = value === 0 ? null : state.shipsMap[value];
-    const isDebug = state.isDebug;
-    const isHit = hit === true;
-    const isMiss = hit === false;
-    const isTaken = value !== 0;
-
-    return {
-      elementId: `cell-${y}${x}`,
-      isAvailable: hit === undefined,
-      isHit,
-      isMiss,
-      isTaken,
-      label: isDebug || isHit ? (ship ? ship.size : value) : '',
-      tooltipContent: isDebug || isHit ? (ship ? ship.name : '') : '',
-    };
-  }, [x, y, state]);
-
-  const cellClass = classNames({
-    cell: true,
-    taken: isTaken,
-    available: isAvailable,
-    hit: isHit,
-    miss: isMiss,
-  });
+  const { id, className, tooltipContent, label } = useMemo(
+    () => getComponentProperties(state, x, y),
+    [state, x, y],
+  );
 
   return (
     <div
-      className={cellClass}
-      id={elementId}
+      className={className}
+      id={id}
       onClick={onClick}
       onMouseOut={onMouseOut}
-      onMouseOver={onMouseOver(elementId, tooltipContent)}
+      onMouseOver={onMouseOver(id, tooltipContent)}
     >
       {label}
     </div>
