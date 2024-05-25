@@ -15,9 +15,9 @@ export const GameIntroScreen = () => {
   }, [dispatch]);
 
   return (
-    <div className="intro-screen" data-testid="intro-screen">
+    <div className="intro-screen" data-testid="intro-screen" role="main">
       <h1>Battleship</h1>
-      <button role="button" aria-label="play" onClick={handleStartClick}>
+      <button aria-label="play" onClick={handleStartClick} role="button">
         Play
       </button>
     </div>

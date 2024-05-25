@@ -2,7 +2,7 @@ import { useMemo } from 'react';
 
 import { useGameState } from '@/providers/StateContext';
 
-import { getComponentProperties } from './Cell.utils.ts';
+import { getComponentProperties } from './Cell.utils';
 
 interface CellProps {
   onClick: () => void;

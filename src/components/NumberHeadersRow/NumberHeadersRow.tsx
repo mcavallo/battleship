@@ -14,9 +14,9 @@ export const NumberHeadersRow = ({ size }: HeaderRowProps) => {
   );
 
   return (
-    <div className="header-row">
+    <div className="header-row" role="columnheader">
       {headers.map((value, idx) => (
-        <div className="header-cell" key={`headers-cell${idx}`}>
+        <div className="header-cell" key={`headers-cell${idx}`} role="cell">
           {value}
         </div>
       ))}

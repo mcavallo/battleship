@@ -11,7 +11,8 @@ import {
   GameScore,
   GameState,
   ShipsMap,
-} from '@/providers/StateContext/StateContext.types.ts';
+} from '@/providers/StateContext/StateContext.types';
+import { fillCol, fillRow } from '@/utils/data';
 
 import {
   BOARD_SIZE_10,
@@ -30,9 +31,7 @@ import {
   SHIP_THREE_TEMPLATE,
   SHIP_TWO,
   SHIP_TWO_TEMPLATE,
-  fillCol,
-  fillRow,
-} from './StateContext.fixtures.ts';
+} from './StateContext.fixtures';
 import {
   calculateScore,
   computeAttack,

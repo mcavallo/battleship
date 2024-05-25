@@ -1,6 +1,6 @@
 import classNames from 'classnames';
 
-import { GameState, Ship } from '@/providers/StateContext/StateContext.types.ts';
+import { GameState, Ship } from '@/providers/StateContext/StateContext.types';
 
 /**
  * Computes the cell label.

@@ -1,6 +1,6 @@
 import { SHIP_ONE, SHIP_SEVEN } from '@/providers/StateContext/StateContext.fixtures';
-import { GameState } from '@/providers/StateContext/StateContext.types.ts';
-import { generateShipsMaps } from '@/providers/StateContext/StateContext.utils.ts';
+import { GameState } from '@/providers/StateContext/StateContext.types';
+import { generateShipsMaps } from '@/providers/StateContext/StateContext.utils';
 
 import {
   getComponentProperties,

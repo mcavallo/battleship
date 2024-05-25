@@ -1,4 +1,4 @@
-import { GameAction, GameActionKind, GameState } from './StateContext.types.ts';
+import { GameAction, GameActionKind, GameState } from './StateContext.types';
 
 export const DEFAULT_MOCKED_STATE: GameState = {
   attacksMap: {},

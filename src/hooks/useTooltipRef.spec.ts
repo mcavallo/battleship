@@ -23,7 +23,7 @@ describe(`useTooltipRef`, () => {
 
     const { result } = renderHook(() => useTooltipRef());
 
-    // @ts-expect-error only for this test
+    // @ts-expect-error disabling type checking only for this test
     expect(result.current.tooltipRef.current.__isMocked).toEqual(true);
 
     result.current.openTooltip('foo', 'bar');

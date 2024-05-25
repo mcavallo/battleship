@@ -15,7 +15,7 @@ import {
   generateEmptyBoard,
   generateShipsMaps,
   isVictoryConditionReached,
-} from './StateContext.utils.ts';
+} from './StateContext.utils';
 
 export const BATTLESHIP_TEMPLATE: ShipTemplate = {
   name: 'Battleship',

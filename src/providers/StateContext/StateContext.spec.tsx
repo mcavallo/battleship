@@ -1,45 +1,18 @@
-import { render, renderHook } from '@testing-library/react';
+import { render } from '@testing-library/react';
 
-import { StateContextProvider, useGameState } from './StateContext';
-import { IntrospectionComponent, MockedStateContextProvider } from './StateContext.mocks';
-import {
-  DEFAULT_MOCKED_STATE,
-  INTROSPECTION_ACTION,
-  INTROSPECTION_STATE,
-} from './StateContext.mocks.constants';
-import { gameReducer, getInitialState } from './StateContext.state.ts';
+import { StateContextProvider } from './StateContext';
+import { IntrospectionComponent } from './StateContext.mocks';
+import { INTROSPECTION_ACTION, INTROSPECTION_STATE } from './StateContext.mocks.constants';
+import { gameReducer, getInitialState } from './StateContext.state';
 
-jest.mock('./StateContext.state.ts', () => {
-  const original = jest.requireActual('./StateContext.state.ts');
+jest.mock('./StateContext.state', () => {
+  const original = jest.requireActual('./StateContext.state');
   return {
     __esModule: true,
     ...original,
     gameReducer: jest.fn().mockImplementation(original.gameReducer),
     getInitialState: jest.fn().mockImplementation(original.getInitialState),
   };
-});
-
-describe(`useGameState`, () => {
-  beforeEach(() => {
-    jest.spyOn(console, 'error').mockImplementation(() => {});
-  });
-
-  afterEach(() => {
-    (console.error as jest.Mock).mockRestore();
-  });
-
-  it('throws when used outside of the StateContext', () => {
-    expect(() => renderHook(() => useGameState())).toThrow();
-  });
-
-  it('returns the StateContext value', () => {
-    const { result } = renderHook(() => useGameState(), {
-      wrapper: ({ children }) => (
-        <MockedStateContextProvider>{children}</MockedStateContextProvider>
-      ),
-    });
-    expect(result.current.state).toEqual(DEFAULT_MOCKED_STATE);
-  });
 });
 
 describe(`StateContextProvider`, () => {

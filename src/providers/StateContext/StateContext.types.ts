@@ -74,9 +74,9 @@ export type StartEvent = {
 
 export type Event = EndEvent | HitEvent | MissEvent | SinkEvent | StartEvent;
 
-export type LogEntry = {
+export type LogEntry<T extends Event> = {
   ts: number;
-  event: Event;
+  event: T;
 };
 
 export type GameState = {
@@ -85,7 +85,7 @@ export type GameState = {
   hasGameEnded: boolean;
   hasGameStarted: boolean;
   isDebug: boolean;
-  log: LogEntry[];
+  log: LogEntry<Event>[];
   shipsMap: ShipsMap;
   score: GameScore;
 };

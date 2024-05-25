@@ -1,1 +1,1 @@
-export { GameScreen } from './GameScreen.tsx';
+export { GameScreen } from './GameScreen';

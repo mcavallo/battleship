@@ -1,25 +1,28 @@
-import classNames from 'classnames';
-import { useCallback, useRef } from 'react';
-import { Tooltip, TooltipRefProps } from 'react-tooltip';
+import { useCallback } from 'react';
+import { Tooltip } from 'react-tooltip';
 
+import { Board } from '@/components/Board';
+import { ButtonsPanel } from '@/components/ButtonsPanel';
 import { EventLog } from '@/components/EventLog';
-import { NumberHeadersRow } from '@/components/NumberHeadersRow';
-import { Row } from '@/components/Row.tsx';
-import { BOARD_SIZE } from '@/constants.ts';
+import { useTooltipRef } from '@/hooks/useTooltipRef';
 import { GameActionKind, useGameState } from '@/providers/StateContext';
 
 export const GameScreen = () => {
   const { dispatch, state } = useGameState();
-  const tooltipRef = useRef<TooltipRefProps>(null);
+  const { tooltipRef, openTooltip, closeTooltip } = useTooltipRef();
 
   const handleGiveUpClick = useCallback(() => {
+    if (state.hasGameEnded) {
+      return;
+    }
+
     dispatch({
       type: GameActionKind.End,
       payload: {
         ts: Date.now(),
       },
     });
-  }, [dispatch]);
+  }, [dispatch, state.hasGameEnded]);
 
   const handleRestartClick = useCallback(() => {
     dispatch({
@@ -59,51 +62,32 @@ export const GameScreen = () => {
   const handleCellMouseOver = useCallback(
     (id: string, content: string) => () => {
       if (id && content) {
-        tooltipRef.current?.open({
-          anchorSelect: `#${id}`,
-          content,
-        });
+        openTooltip(id, content);
       }
     },
-    [],
+    [openTooltip],
   );
 
   const handleCellMouseOut = useCallback(() => {
-    tooltipRef.current?.close();
-  }, []);
-
-  const boardClass = classNames({
-    board: true,
-    'game-ended': state.hasGameEnded,
-    'game-active': !state.hasGameEnded,
-  });
+    closeTooltip();
+  }, [closeTooltip]);
 
   return (
-    <div className="game-screen" data-testid="game-screen">
-      <div className="buttons-panel">
-        <button onClick={handleGiveUpClick} disabled={state.hasGameEnded}>
-          Give up
-        </button>
-        <button onClick={handleRestartClick}>Restart</button>
-        <button onClick={handleDebugClick}>Debug</button>
-      </div>
+    <div className="game-screen" data-testid="game-screen" role="main">
+      <ButtonsPanel
+        onGiveUp={handleGiveUpClick}
+        onRestart={handleRestartClick}
+        onToggleDebug={handleDebugClick}
+      />
       <div className="columns">
-        <div className={boardClass}>
-          <NumberHeadersRow size={BOARD_SIZE} />
-          {state.board.map((row, rowIdx) => (
-            <Row
-              key={`row${rowIdx}`}
-              onAttack={handleAttackClick}
-              onCellMouseOut={handleCellMouseOut}
-              onCellMouseOver={handleCellMouseOver}
-              row={row}
-              rowIdx={rowIdx}
-            />
-          ))}
-          <Tooltip ref={tooltipRef} imperativeModeOnly />
-        </div>
+        <Board
+          onAttack={handleAttackClick}
+          onCellMouseOut={handleCellMouseOut}
+          onCellMouseOver={handleCellMouseOver}
+        />
         <EventLog />
       </div>
+      <Tooltip ref={tooltipRef} imperativeModeOnly />
     </div>
   );
 };

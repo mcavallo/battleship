@@ -1,5 +1,5 @@
-import { Cell } from './Cell.tsx';
-import { LetterHeaderCell } from './LetterHeaderCell.tsx';
+import { Cell } from '../Cell';
+import { LetterHeaderCell } from '../LetterHeaderCell';
 
 interface RowProps {
   onAttack: (x: number, y: number) => () => void;

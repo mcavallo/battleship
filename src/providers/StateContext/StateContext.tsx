@@ -1,7 +1,7 @@
-import React, { createContext, useContext, useMemo, useReducer } from 'react';
+import React, { createContext, useMemo, useReducer } from 'react';
 
-import { gameReducer, getInitialState } from './StateContext.state.ts';
-import { GameAction, GameState } from './StateContext.types.ts';
+import { gameReducer, getInitialState } from './StateContext.state';
+import { GameAction, GameState } from './StateContext.types';
 
 export interface StateContextValues {
   state: GameState;
@@ -13,17 +13,6 @@ interface StateContextProviderProps {
 }
 
 export const StateContext = createContext<StateContextValues>({} as StateContextValues);
-
-// eslint-disable-next-line react-refresh/only-export-components
-export const useGameState = () => {
-  const value = useContext(StateContext);
-
-  if (!value || Object.keys(value).length === 0) {
-    throw new Error(`'useGameState' should only be used inside 'StateContext'.`);
-  }
-
-  return value;
-};
 
 export const StateContextProvider = ({ children }: StateContextProviderProps) => {
   const [state, dispatch] = useReducer(gameReducer, getInitialState());

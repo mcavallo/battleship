@@ -1,9 +1,10 @@
 import merge from 'lodash/merge';
 import React, { Dispatch, useEffect } from 'react';
 
-import { GameAction, GameState } from '@/providers/StateContext/StateContext.types.ts';
+import { useGameState } from '@/hooks/useGameState';
+import { GameAction, GameState } from '@/providers/StateContext/StateContext.types';
 
-import { StateContext, useGameState } from './StateContext';
+import { StateContext } from './StateContext';
 import { DEFAULT_MOCKED_STATE, INTROSPECTION_ACTION } from './StateContext.mocks.constants';
 
 export type PartialStateContextProviderValue = {
@@ -18,11 +19,11 @@ interface MockedStateContextProviderProps {
 
 export const MockedStateContextProvider = ({
   children,
-  value,
+  value: { state = {}, dispatch = () => {} } = {},
 }: MockedStateContextProviderProps) => {
   const valueWithDefaults = {
-    state: merge(Object.assign({}, DEFAULT_MOCKED_STATE), value?.state || {}),
-    dispatch: value?.dispatch || (() => {}),
+    state: merge(structuredClone(DEFAULT_MOCKED_STATE), state),
+    dispatch,
   };
 
   return <StateContext.Provider value={valueWithDefaults}>{children}</StateContext.Provider>;

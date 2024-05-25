@@ -1,6 +1,16 @@
-import cloneDeep from 'lodash/cloneDeep';
-
-import { Board, EventKind, LogEntry, Ship, ShipTemplate, ShipsMap } from './StateContext.types.ts';
+import {
+  Board,
+  EndEvent,
+  EventKind,
+  HitEvent,
+  LogEntry,
+  MissEvent,
+  Ship,
+  ShipTemplate,
+  ShipsMap,
+  SinkEvent,
+  StartEvent,
+} from './StateContext.types';
 
 export const SHIP_ONE_TEMPLATE: ShipTemplate = { name: 'one', hits: 0, size: 4 };
 
@@ -70,7 +80,7 @@ export const BOARD_SIZE_10: Board = [
   [0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
 ];
 
-export const END_LOG_ENTRY: LogEntry = {
+export const END_LOG_ENTRY: LogEntry<EndEvent> = {
   ts: 0,
   event: {
     type: EventKind.End,
@@ -85,7 +95,7 @@ export const END_LOG_ENTRY: LogEntry = {
   },
 };
 
-export const MISS_LOG_ENTRY: LogEntry = {
+export const MISS_LOG_ENTRY: LogEntry<MissEvent> = {
   ts: 0,
   event: {
     type: EventKind.Miss,
@@ -94,7 +104,7 @@ export const MISS_LOG_ENTRY: LogEntry = {
   },
 };
 
-export const HIT_LOG_ENTRY: LogEntry = {
+export const HIT_LOG_ENTRY: LogEntry<HitEvent> = {
   ts: 0,
   event: {
     type: EventKind.Hit,
@@ -104,7 +114,7 @@ export const HIT_LOG_ENTRY: LogEntry = {
   },
 };
 
-export const SINK_LOG_ENTRY: LogEntry = {
+export const SINK_LOG_ENTRY: LogEntry<SinkEvent> = {
   ts: 0,
   event: {
     type: EventKind.Sink,
@@ -114,31 +124,9 @@ export const SINK_LOG_ENTRY: LogEntry = {
   },
 };
 
-export const START_LOG_ENTRY: LogEntry = {
+export const START_LOG_ENTRY: LogEntry<StartEvent> = {
   ts: 0,
   event: {
     type: EventKind.Start,
   },
 };
-
-/**
- * Fills a row with sequential numbers.
- */
-export function fillRow(board: Board, y: number) {
-  const clone = cloneDeep(board);
-  clone[y] = clone[y].map((_, idx) => idx + 1);
-  return clone;
-}
-
-/**
- * Fills a column with sequential numbers.
- */
-export function fillCol(board: Board, x: number) {
-  const clone = cloneDeep(board);
-
-  for (let i = 0; i < clone.length; i++) {
-    clone[i][x] = i + 1;
-  }
-
-  return clone;
-}
