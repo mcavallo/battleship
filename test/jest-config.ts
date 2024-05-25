@@ -21,7 +21,7 @@ const config: Config = {
     'main\\.tsx?$',
   ],
   coverageDirectory: '../coverage',
-  coverageReporters: process.env.CI ? ['text'] : ['lcov'],
+  coverageReporters: process.env.CI ? ['text'] : ['lcov', 'text-summary'],
   testEnvironment: 'jsdom',
   moduleNameMapper: {
     '^@/(.*)$': '<rootDir>/$1',
