@@ -2,6 +2,7 @@ import {
   Board,
   EndEvent,
   EventKind,
+  GameState,
   HitEvent,
   LogEntry,
   MissEvent,
@@ -12,31 +13,31 @@ import {
   StartEvent,
 } from './StateContext.types';
 
-export const SHIP_ONE_TEMPLATE: ShipTemplate = { name: 'one', hits: 0, size: 4 };
+export const SHIP_ONE_TEMPLATE: ShipTemplate = { name: 'SHIP_ONE', hits: 0, size: 4 };
 
 export const SHIP_ONE: Ship = { ...SHIP_ONE_TEMPLATE, id: 1 };
 
-export const SHIP_TWO_TEMPLATE: ShipTemplate = { name: 'two', hits: 2, size: 4 };
+export const SHIP_TWO_TEMPLATE: ShipTemplate = { name: 'SHIP_TWO', hits: 2, size: 4 };
 
 export const SHIP_TWO: Ship = { ...SHIP_TWO_TEMPLATE, id: 2 };
 
-export const SHIP_THREE_TEMPLATE: ShipTemplate = { name: 'three', hits: 4, size: 4 };
+export const SHIP_THREE_TEMPLATE: ShipTemplate = { name: 'SHIP_THREE', hits: 4, size: 4 };
 
 export const SHIP_THREE: Ship = { ...SHIP_THREE_TEMPLATE, id: 3 };
 
-export const SHIP_FOUR_TEMPLATE: ShipTemplate = { name: 'four', hits: 0, size: 2 };
+export const SHIP_FOUR_TEMPLATE: ShipTemplate = { name: 'SHIP_FOUR', hits: 0, size: 2 };
 
 export const SHIP_FOUR: Ship = { ...SHIP_FOUR_TEMPLATE, id: 4 };
 
-export const SHIP_FIVE_TEMPLATE: ShipTemplate = { name: 'five', hits: 0, size: 3 };
+export const SHIP_FIVE_TEMPLATE: ShipTemplate = { name: 'SHIP_FIVE', hits: 0, size: 3 };
 
 export const SHIP_FIVE: Ship = { ...SHIP_FIVE_TEMPLATE, id: 5 };
 
-export const SHIP_SIX_TEMPLATE: ShipTemplate = { name: 'six', hits: 0, size: 4 };
+export const SHIP_SIX_TEMPLATE: ShipTemplate = { name: 'SHIP_SIX', hits: 0, size: 4 };
 
 export const SHIP_SIX: Ship = { ...SHIP_SIX_TEMPLATE, id: 6 };
 
-export const SHIP_SEVEN_TEMPLATE: ShipTemplate = { name: 'seven', hits: 0, size: 1 };
+export const SHIP_SEVEN_TEMPLATE: ShipTemplate = { name: 'SHIP_SEVEN', hits: 0, size: 1 };
 
 export const SHIP_SEVEN: Ship = { ...SHIP_SEVEN_TEMPLATE, id: 7 };
 
@@ -79,6 +80,46 @@ export const BOARD_SIZE_10: Board = [
   [0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
   [0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
 ];
+
+export const STATE_BOARD_10: Partial<GameState> = {
+  board: BOARD_SIZE_10,
+  attacksMap: {},
+  shipsMap: {},
+}
+
+export const STATE_BOARD_10_W_SHIPS: Partial<GameState> = {
+  ...STATE_BOARD_10,
+  board: [
+    [0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
+    [0, 1, 0, 0, 0, 0, 0, 0, 0, 0],
+    [0, 1, 0, 0, 0, 0, 0, 0, 0, 0],
+    [0, 1, 0, 5, 5, 5, 0, 0, 0, 0],
+    [0, 1, 0, 0, 0, 0, 0, 0, 0, 0],
+    [0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
+    [0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
+    [0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
+    [0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
+    [0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
+  ],
+  shipsMap: {
+    1: SHIP_ONE,
+    5: SHIP_FIVE
+  }
+}
+
+export const STATE_BOARD_10_W_SHIPS_W_MISS : Partial<GameState>= {
+  ...STATE_BOARD_10_W_SHIPS,
+  attacksMap: {
+    '00': false
+  }
+}
+
+export const STATE_BOARD_10_W_SHIPS_W_HIT : Partial<GameState>= {
+  ...STATE_BOARD_10_W_SHIPS,
+  attacksMap: {
+    '11': true
+  }
+}
 
 export const END_LOG_ENTRY: LogEntry<EndEvent> = {
   ts: 0,

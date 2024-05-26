@@ -72,7 +72,7 @@ describe(`getComponentProperties`, () => {
         [state, 0, 0],
       ],
       [
-        { id: 'cell-10', className: 'cell taken hit', label: '1', tooltipContent: 'seven' },
+        { id: 'cell-10', className: 'cell taken hit', label: '1', tooltipContent: 'SHIP_SEVEN' },
         [state, 0, 1],
       ],
       [
@@ -85,12 +85,12 @@ describe(`getComponentProperties`, () => {
           id: 'cell-01',
           className: 'cell taken available',
           label: '1',
-          tooltipContent: 'seven #1',
+          tooltipContent: 'SHIP_SEVEN #1',
         },
         [stateWithDebug, 1, 0],
       ],
       [
-        { id: 'cell-10', className: 'cell taken hit', label: '1', tooltipContent: 'seven #2' },
+        { id: 'cell-10', className: 'cell taken hit', label: '1', tooltipContent: 'SHIP_SEVEN #2' },
         [stateWithDebug, 0, 1],
       ],
     ];

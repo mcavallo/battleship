@@ -4,7 +4,7 @@ export const StartEntry = () => {
       <div className="content">
         <span>🏁</span>
         <span>
-          <strong>Game started.</strong>
+          <strong>Game started</strong>
         </span>
       </div>
     </div>

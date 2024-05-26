@@ -330,7 +330,7 @@ describe(`computeAttack`, () => {
       '1': {
         hits: 0,
         id: 1,
-        name: 'four',
+        name: 'SHIP_FOUR',
         size: 2,
       },
     });
@@ -387,7 +387,7 @@ describe(`computeAttack`, () => {
           '1': {
             hits: 1,
             id: 1,
-            name: 'four',
+            name: 'SHIP_FOUR',
             size: 2,
           },
         },
@@ -440,7 +440,7 @@ describe(`computeAttack`, () => {
           '1': {
             hits: 2,
             id: 1,
-            name: 'four',
+            name: 'SHIP_FOUR',
             size: 2,
           },
         },
