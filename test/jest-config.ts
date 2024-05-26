@@ -16,6 +16,7 @@ const config: Config = {
     '\\.d.ts$',
     '\\.fixtures\\.tsx?$',
     '\\.mocks\\.tsx?$',
+    '\\.stories\\.tsx?$',
     '\\.types\\.tsx?$',
     'index\\.tsx?$',
     'main\\.tsx?$',
