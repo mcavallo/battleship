@@ -1,6 +1,10 @@
 # Battleship
 
+## Preview
+
 The app can be previewed at https://mcavallo.github.io/battleship/
+
+The Storybook build can be found at https://mcavallo.github.io/battleship/storybook
 
 ## Running the app locally
 
