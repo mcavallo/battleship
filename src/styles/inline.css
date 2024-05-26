@@ -1,0 +1,19 @@
+@import url('./partials/variables.css');
+@import url('./partials/html.css');
+
+#root {
+  opacity: 0;
+}
+
+body {
+  margin: 0;
+  min-width: 320px;
+  min-height: 100vh;
+}
+
+@media (prefers-color-scheme: light) {
+  html {
+    color: var(--color-page-light-text);
+    background-color: var(--color-page-light-bg);
+  }
+}
