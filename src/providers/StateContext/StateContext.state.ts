@@ -47,8 +47,13 @@ export function getInitialState(): GameState {
 export function gameReducer(state: GameState, action: GameAction) {
   switch (action.type) {
     case GameActionKind.Attack: {
-      const newState = structuredClone(state);
       const { ts, coords } = action.payload;
+
+      if (typeof state.attacksMap?.[`${coords.y}${coords.x}`] != 'undefined') {
+        return state;
+      }
+
+      const newState = structuredClone(state);
 
       const computedState = {
         ...newState,

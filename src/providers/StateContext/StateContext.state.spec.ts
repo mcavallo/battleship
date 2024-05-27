@@ -59,6 +59,39 @@ describe(`gameReducer`, () => {
       expect(result).toMatchSnapshot();
     });
 
+    it(`skips the attack if the cell was already attacked`, () => {
+      const initialState = getInitialState();
+      initialState.attacksMap['00'] = true;
+
+      let result = gameReducer(initialState, {
+        type: GameActionKind.Attack,
+        payload: {
+          ts: Date.now(),
+          coords: {
+            x: 0,
+            y: 0,
+          },
+        },
+      });
+
+      expect(result).toEqual(initialState);
+
+      initialState.attacksMap['00'] = false;
+
+      result = gameReducer(initialState, {
+        type: GameActionKind.Attack,
+        payload: {
+          ts: Date.now(),
+          coords: {
+            x: 0,
+            y: 0,
+          },
+        },
+      });
+
+      expect(result).toEqual(initialState);
+    });
+
     it('runs the EndAction when the win condition is met', () => {
       (calculateScore as jest.Mock).mockReturnValueOnce({
         current: 13,
