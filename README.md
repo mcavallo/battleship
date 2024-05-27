@@ -9,7 +9,7 @@ The Storybook build can be found at https://mcavallo.github.io/battleship/storyb
 ## Running the app locally
 
 ### Requirements
-- Node 18+
+- Node 18.18+
 - Yarn
 
 ### Instructions
