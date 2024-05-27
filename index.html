@@ -10,6 +10,7 @@
     <title>Battleship</title>
     <style>:root {
   --cell-size: 34px;
+  --cell-header-mobile-size: 30px;
   --color-accent: #ff3f34;
   --color-accent-hover: #ff5248;
   --color-accent-dark-disabled: #843231;
@@ -55,6 +56,12 @@
   background-color: var(--color-page-dark-bg);
   transition: 100ms all ease-in-out;
 }
+@media (prefers-color-scheme: light) {
+  :root {
+    color: var(--color-page-light-text);
+    background-color: var(--color-page-light-bg);
+  }
+}
 #root {
   opacity: 0;
 }
@@ -63,15 +70,9 @@ body {
   min-width: 320px;
   min-height: 100vh;
 }
-@media (prefers-color-scheme: light) {
-  html {
-    color: var(--color-page-light-text);
-    background-color: var(--color-page-light-bg);
-  }
-}
     </style>
-    <script type="module" crossorigin src="./assets/index-7btO1QMO.js"></script>
-    <link rel="stylesheet" crossorigin href="./assets/index-DN9oQ0h4.css">
+    <script type="module" crossorigin src="./assets/index-SIlZ3U62.js"></script>
+    <link rel="stylesheet" crossorigin href="./assets/index-lEM0OkEE.css">
   </head>
   <body>
     <div id="root"></div>
