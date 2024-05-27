@@ -9,7 +9,7 @@ describe(`LetterHeaderCell`, () => {
 
       const container = screen.getByRole('rowheader');
 
-      expect(Object.values(container.classList)).toEqual(['header-cell']);
+      expect(Object.values(container.classList)).toEqual(['header-cell', 'vertical']);
     });
   });
 
