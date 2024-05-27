@@ -1,5 +1,6 @@
 :root {
   --cell-size: 34px;
+  --cell-header-mobile-size: 30px;
   --color-accent: #ff3f34;
   --color-accent-hover: #ff5248;
   --color-accent-dark-disabled: #843231;

@@ -61,7 +61,7 @@ h1 {
 }
 
 .game-screen {
-  padding-top: 5rem;
+  padding-top: 60px;
   flex: 1;
   display: flex;
 }
@@ -77,15 +77,24 @@ h1 {
   position: fixed;
   top: 0;
   right: 0;
-  padding: 16px;
+  padding: 14px;
+  z-index: 2;
 }
 
-.buttons-panel > * {
+.buttons-panel button {
   margin-left: 8px;
 
   &:first-of-type {
     margin-left: 0;
   }
+}
+
+.buttons-panel .wrapper {
+  background: var(--color-page-dark-bg);
+  box-shadow: 0 0 8px 2px var(--color-page-dark-bg);
+  display: inline-flex;
+  padding: 0;
+  border-radius: 3px;
 }
 
 .event-log {
@@ -225,6 +234,11 @@ h1 {
     background-color: var(--color-accent-light-disabled);
   }
 
+  .buttons-panel .wrapper {
+    background: var(--color-page-light-bg);
+    box-shadow: 0 0 8px 2px var(--color-page-light-bg);
+  }
+
   .header-cell {
     color: var(--color-page-light-text);
   }
@@ -268,6 +282,7 @@ h1 {
     top: 0;
     right: 0;
     left: 0;
+    padding-left: 0;
     width: 100vw;
     text-align: center;
 
@@ -280,6 +295,19 @@ h1 {
   }
 
   .event-log {
+    margin-top: 24px;
     margin-left: 0;
+  }
+
+  .header-row {
+    margin-left: var(--cell-header-mobile-size);
+  }
+
+  .header-cell.vertical {
+    width: var(--cell-header-mobile-size);
+  }
+
+  .header-row .header-cell {
+    height: var(--cell-header-mobile-size);
   }
 }

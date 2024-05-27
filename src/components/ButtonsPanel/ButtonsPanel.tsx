@@ -11,15 +11,17 @@ export const ButtonsPanel = ({ onGiveUp, onRestart, onToggleDebug }: ButtonsPane
 
   return (
     <div className="buttons-panel" role="menubar">
-      <button aria-label="give up" onClick={onGiveUp} disabled={state.hasGameEnded} role="button">
-        Give up
-      </button>
-      <button aria-label="restart" onClick={onRestart} role="button">
-        Restart
-      </button>
-      <button aria-label="toggle debug" onClick={onToggleDebug} role="button">
-        Debug
-      </button>
+      <div className="wrapper">
+        <button aria-label="give up" onClick={onGiveUp} disabled={state.hasGameEnded} role="button">
+          Give up
+        </button>
+        <button aria-label="restart" onClick={onRestart} role="button">
+          Restart
+        </button>
+        <button aria-label="toggle debug" onClick={onToggleDebug} role="button">
+          Debug
+        </button>
+      </div>
     </div>
   );
 };
